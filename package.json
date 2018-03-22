@@ -1,0 +1,27 @@
+{
+  "name": "inovics_backend",
+  "version": "1.0.0",
+  "description": "Trying to learn express, mongo DB, node and mongoose.",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run assets\" ",
+    "assets": "nodemon ./start.js --ignore public/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yash Joshi",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "connect-mongo": "^2.0.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.0.11"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.2",
+    "open": "^0.0.5"
+  }
+}
