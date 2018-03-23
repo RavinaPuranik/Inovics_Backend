@@ -1,10 +1,20 @@
 const express = require('express');
-const controller = require('../controllers/courseController');
+const controller = require('../controllers/Controller');
 
 const router = express.Router();
 
-router.get('/', controller.getCourses);
+router.get('/',(req,res) => {
+  res.send('Server is Up and Running');
+});
 
-router.post('/',controller.createCourse);
+// Courses Routes and Controllers handling
+
+router.get('/courses', controller.getCourses);
+router.post('/create/courses',controller.createCourse);
+
+// Jobs Routes and Controllers handling
+
+router.get('/jobs', controller.getJobs);
+router.post('/create/jobs', controller.createJob);
 
 module.exports = router;

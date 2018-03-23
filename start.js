@@ -14,6 +14,7 @@ mongoose.connection.once("open", () => {
 });
 
 require('./model/courses');
+require('./model/jobs');
 
 const app = require('./index');
 
