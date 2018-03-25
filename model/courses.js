@@ -5,6 +5,7 @@ const courseSchema = new mongoose.Schema({
   language:{
     type: String,
     trim: true,
+    lowercase:true,
     required: 'Please Enter a valid language'
   },
   name: {

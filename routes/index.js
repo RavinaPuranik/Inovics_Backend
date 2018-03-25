@@ -9,7 +9,7 @@ router.get('/',(req,res) => {
 
 // Courses Routes and Controllers handling
 
-router.get('/courses', controller.getCourses);
+router.get('/courses/:name', controller.getCourses);
 router.post('/create/courses',controller.createCourse);
 
 // Jobs Routes and Controllers handling
