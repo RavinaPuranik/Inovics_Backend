@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  .inner
+    h2= title
+    form.form(action="/login" method="POST")
+      label(for="email") Email Address
+      input(type="email" name="email")
+      br
+      label(for="password") Password
+      input(type="password" name="password")
+      br
+      input.button(type="submit" value="Log In →")
+      br
+      a(href="/register") Register Now

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .inner
+    h2= title
+    form(action="/register" method="POST" enctype="multipart/form-data")
+      label(for="name") Name
+      input(type="text" name="name")
+      br
+      label(for="email") Email
+      input(type="email" name="email")
+      br
+      label(for="photo") Photo
+      input(type="file" name="photo" accept="image/gif,image/png,image/jpeg")
+      br
+      label(for="password") Password
+      input(type="password" name="password")
+      br
+      label(for="password-confirm") Confirm Password
+      input(type="password" name="password-confirm")
+      br
+      input.button(type="submit" value="Register")
