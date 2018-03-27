@@ -7,7 +7,7 @@ const jobsSchema = new mongoose.Schema({
     trim: true,
     required: 'Please Enter a valid company'
   },
-  tags:[String],
+  tags:String,
   salary: {
     type: Number,
     trim: true,
