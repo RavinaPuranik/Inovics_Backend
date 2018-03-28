@@ -41,6 +41,6 @@ exports.createJob = async (req,res) => {
 };
 
 exports.getJobs = async (req,res) => {
-  const jobs = await Jobs.find();
+  const jobs = await Jobs.find({'tags':req.params.name});
   res.json(jobs);
 }

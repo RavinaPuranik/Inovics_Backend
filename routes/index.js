@@ -14,7 +14,7 @@ router.post('/create/courses',controller.createCourse);
 
 // Jobs Routes and Controllers handling
 
-router.get('/jobs', controller.getJobs);
+router.get('/jobs/:name', controller.getJobs);
 router.post('/create/jobs', controller.createJob);
 
 module.exports = router;
