@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('../controllers/Controller');
+const userController = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -16,5 +17,22 @@ router.post('/create/courses',controller.createCourse);
 
 router.get('/jobs/:name', controller.getJobs);
 router.post('/create/jobs', controller.createJob);
+
+// User Register and Login handling
+router.post('/register', userController.register);
+router.post('/login', userController.login);
+router.get('/logout', userController.logout);
+
+router.get('/isLogin', userController.isLoggedIn);
+
+router.get('/successjson', function(req, res) {
+  res.status(201);
+  res.send(req.user);
+});
+
+router.get('/failurejson', function(req, res) {
+  res.status(401);
+  res.send({error:true});
+});
 
 module.exports = router;
