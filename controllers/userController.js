@@ -37,10 +37,10 @@ exports.register = async (req, res) => {
       bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(user.password, salt, async function(err, hash) {
           user.otp = await otp.generator(6);
-          user.otpExpiry = Date.now() + 300000;
+          user.otpExpiry = Date.now() + 3600000;
           user.isVerified = false;
           user.password = hash;
-          mailer.send({email:req.body.email,subject:'OTP GENERTAION',text:`Your otp is ${user.otp}`,html:`<h2>Verification OTP is ${user.otp}</h2>`},res)
+          mailer.send({email:req.body.email,subject:'OTP GENERTAION',text:`Your otp is ${user.otp}`,html:`<h2>Verification OTP is ${user.otp}</h2>`},res);
 
           await user.save();
           res.status(201);
@@ -66,9 +66,33 @@ exports.logout = (req, res) => {
 exports.isLoggedIn = (req, res) => {
   if (req.isAuthenticated()) {
     res.status(201);
-    res.json({ isLogin: true });
+    res.json({ isLogin: true, email: req.user.email, name:req.user.name, id: req.user._id, interest: req.user.interest, isVerified: req.user.isVerified });
   } else {
     res.status(401);
     res.json({ isLogin: false });
   }
 };
+
+exports.otpVerify = async (req, res) => {
+  const user = await User.findOne({ email: req.params.user });
+  if(user.otpExpiry.getTime() >= Date.now()){
+    if(user.otp === req.body.otp){
+      user.isVerified = true;
+      await user.save();
+      res.status(201);
+      res.send({ isLogin:true });
+    }else{
+      res.status(401);
+      res.send({error:true,message:'OTP Don not match'});
+    }
+  }else{
+    user.otp = await otp.generator();
+    user.otpExpiry = Date.now() + 3600000;
+    user.isVerified = false;
+    await mailer.send({email:user.email,subject:'OTP GENERTAION',text:`Your otp is ${user.otp}`,html:`<h2>New Verification OTP is ${user.otp}</h2>`},res);
+
+    await user.save();
+    res.status(201);
+    res.json({ error: true, message: 'OTP Sent again' });
+  }
+}

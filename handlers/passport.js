@@ -8,9 +8,10 @@ passport.use(
   new LocalStrategy(
     {
       usernameField: "email",
-      passwordField: "password"
+      passwordField: "password",
+      passReqToCallback: true
     },
-    function(username, password, done) {
+    function(req,username, password, done) {
       User.findOne({ email: username }, function(err, user) {
         if (err) {
           return done(err);
@@ -24,7 +25,6 @@ passport.use(
             }
             return done(null, false, { message: "password incoreect" });
         });
-
       });
     }
   )

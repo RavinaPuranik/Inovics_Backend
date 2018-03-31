@@ -20,6 +20,7 @@ exports.send = (options,res) => {
 
   const send = transport.sendMail(mailOptions, (error,info) => {
     if(error){
+      console.log(error);
        res.json({error:true,message:'SOmething went wrong with the mail'})
     }
   });

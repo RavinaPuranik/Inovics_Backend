@@ -19,6 +19,7 @@ router.get('/jobs/:name', controller.getJobs);
 router.post('/create/jobs', controller.createJob);
 
 // User Register and Login handling
+
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/logout', userController.logout);
@@ -34,5 +35,9 @@ router.get('/failurejson', function(req, res) {
   res.status(401);
   res.send({error:true});
 });
+
+// OTP Checking
+
+router.post('/otp/verify/:user', userController.otpVerify);
 
 module.exports = router;

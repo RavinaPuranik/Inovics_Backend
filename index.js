@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const expressValidator = require('express-validator');
 const session = require('express-session');
 const passport = require('passport');
+
 const LocalStrategy = require('passport-local').Strategy;
 
 require('./handlers/passport');
