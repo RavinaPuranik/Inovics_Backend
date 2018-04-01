@@ -25,15 +25,14 @@ exports.register = async (req, res) => {
   const errors = req.validationErrors();
 
   if(existingUser){
-    res.status(401);
-    res.send({isRegister:false, errorData:["Existing User"]});
+    res.json({error:true, message:["Existing User"]});
   }else{
     if (errors) {
       const errorData = [];
       errors.map(error => errorData.push(error.msg));
-      res.send({ isRegister:false, errorData });
+      res.send({ isRegister:false, message:errorData });
     } else {
-      const user = new User({email: req.body.email, name: req.body.name, password: req.body.password, interest: req.body.interest});
+      const user = new User({email: req.body.email, name: req.body.name, password: req.body.password, image: req.body.image});
       bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(user.password, salt, async function(err, hash) {
           user.otp = await otp.generator(6);
@@ -43,8 +42,7 @@ exports.register = async (req, res) => {
           mailer.send({email:req.body.email,subject:'OTP GENERTAION',text:`Your otp is ${user.otp}`,html:`<h2>Verification OTP is ${user.otp}</h2>`},res);
 
           await user.save();
-          res.status(201);
-          res.json({ isRegister: true, email: req.body.email });
+          res.json({ error: false, message: 'User Registered' });
 
         });
       });
@@ -68,7 +66,6 @@ exports.isLoggedIn = (req, res) => {
     res.status(201);
     res.json({ isLogin: true, email: req.user.email, name:req.user.name, id: req.user._id, interest: req.user.interest, isVerified: req.user.isVerified });
   } else {
-    res.status(401);
     res.json({ isLogin: false });
   }
 };

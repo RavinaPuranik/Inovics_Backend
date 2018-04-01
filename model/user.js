@@ -18,18 +18,13 @@ const userSchema = new mongoose.Schema({
     trim: true,
     required: "Please Enter a password"
   },
-  interest: {
-    type: String,
-    trim: true
-  },
   otp: {
     type: String,
     trim: true
   },
+  image:String,
   otpExpiry: Date,
-  isVerified: Boolean,
-  resetPassword: String,
-  resetPasswordExpiry: Date
+  isVerified: Boolean
 });
 
 module.exports = mongoose.model("User", userSchema);

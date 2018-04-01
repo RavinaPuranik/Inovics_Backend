@@ -27,13 +27,11 @@ router.get('/logout', userController.logout);
 router.get('/isLogin', userController.isLoggedIn);
 
 router.get('/successjson', function(req, res) {
-  res.status(201);
-  res.send(req.user);
+  res.json({error:false,message:'User is verified'});
 });
 
 router.get('/failurejson', function(req, res) {
-  res.status(401);
-  res.send({error:true});
+  res.send({error:true,message:'Please fill the details properly'});
 });
 
 // OTP Checking
