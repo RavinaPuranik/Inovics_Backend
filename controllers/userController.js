@@ -57,15 +57,15 @@ exports.login = passport.authenticate("local", {
 });
 
 exports.logout = (req, res) => {
-  req.logout();
   res.json({ isLogin: false });
 };
 
-exports.isLoggedIn = (req, res) => {
-  if (req.isAuthenticated()) {
-    res.status(201);
-    res.json({ isLogin: true, email: req.user.email, name:req.user.name, id: req.user._id, interest: req.user.interest, isVerified: req.user.isVerified });
-  } else {
+exports.isLoggedIn = async (req, res) => {
+  const userData = await User.findOne({email:req.body.email});
+  if(userData){
+    res.json({ isLogin: true, email: userData.email, name:userData.name, id: userData._id, interest: userData.interest, isVerified: userData.isVerified, image: userData.image });
+  }
+  else {
     res.json({ isLogin: false });
   }
 };
