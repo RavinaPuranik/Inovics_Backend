@@ -38,4 +38,8 @@ router.get('/failurejson', function(req, res) {
 
 router.post('/otp/verify/:user', userController.otpVerify);
 
+// Feedback
+
+router.post('/feedback', userController.feedback);
+
 module.exports = router;
