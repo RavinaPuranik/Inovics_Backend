@@ -31,6 +31,11 @@ exports.getCourses = async (req,res) => {
   res.json(courses);
 }
 
+exports.deleteCourse=async(req,res)=>{
+const course=await Course.findOne({'_id':req.body.course_id});
+course.remove();
+}
+
 exports.createJob = async (req,res) => {
   console.log('Cool', req.body);
   const jobs = new Jobs(req.body);
@@ -43,4 +48,9 @@ exports.createJob = async (req,res) => {
 exports.getJobs = async (req,res) => {
   const jobs = await Jobs.find({'tags':req.params.name});
   res.json(jobs);
+}
+
+exports.deleteJob=async(req,res)=>{
+const job=await Jobs.findOne({'_id':req.body.job_id});
+job.remove();
 }
