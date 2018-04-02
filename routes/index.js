@@ -24,7 +24,7 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/logout', userController.logout);
 
-router.get('/isLogin', userController.isLoggedIn);
+router.post('/islogin', userController.isLoggedIn);
 
 router.get('/successjson', function(req, res) {
   res.json({error:false,message:'User is verified'});
