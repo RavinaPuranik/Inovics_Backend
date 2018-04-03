@@ -40,11 +40,15 @@ router.get('/failurejson', function(req, res) {
 
 router.post('/otp/verify/:user', userController.otpVerify);
 
+// Favorites
 
-//Favorites
 router.post('/courses/:name/:id',userController.saveFavoriteCourses);
 router.post('/jobs/:name/:id',userController.saveFavoriteJobs);
-router.get('/favorites/:id',userController.showFavorites);
+router.get('/courseFavorites/:id',userController.showFavoriteCourses);
+router.get('/jobFavorites/:id',userController.showFavoriteJobs);
 
+// feedback
+
+router.post('/feedback', userController.feedback);
 
 module.exports = router;

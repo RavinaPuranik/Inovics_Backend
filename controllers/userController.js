@@ -75,14 +75,14 @@ exports.isLoggedIn = async (req, res) => {
 exports.otpVerify = async (req, res) => {
   const user = await User.findOne({ email: req.params.user });
   if(user.otpExpiry.getTime() >= Date.now()){
+    console.log(user.otp);
+    console.log(req.body.otp);
     if(user.otp === req.body.otp){
       user.isVerified = true;
       await user.save();
-      res.status(201);
-      res.send({ isLogin:true });
+      res.json({ error:false, name:user.name, email:user.email, image:user.image, isVerified:user.isVerified });
     }else{
-      res.status(401);
-      res.send({error:true,message:'OTP Don not match'});
+      res.json({error:true,message:['Wrong OTP']});
     }
   }else{
     user.otp = await otp.generator();
@@ -91,8 +91,7 @@ exports.otpVerify = async (req, res) => {
     await mailer.send({email:user.email,subject:'OTP GENERTAION',text:`Your otp is ${user.otp}`,html:`<h2>New Verification OTP is ${user.otp}</h2>`},res);
 
     await user.save();
-    res.status(201);
-    res.json({ error: true, message: 'OTP Sent again' });
+    res.json({ error: true, message: ['OTP Expired.Please check your mail for new OTP.'] });
   }
 }
 
@@ -106,6 +105,8 @@ exports.saveFavoriteCourses=async(req,res)=>{
   [operator]:   { favoriteCourses:course.id
   }} ,
 {new:true});
+const isFavorite=favorites.includes(course.id)?'Removed from Favorites':'Marked as Favorites';
+res.json({error:false,message:isFavorite});
 }
 
 exports.saveFavoriteJobs=async(req,res)=>{
@@ -117,15 +118,27 @@ exports.saveFavoriteJobs=async(req,res)=>{
   [operator]:   { favoriteJobs:job.id
   }} ,
 {new:true});
+const isFavorite=favorites.includes(job.id)?'Removed from Favorites':'Marked as Favorites';
+res.json({error:false,message:isFavorite});
 }
 
-exports.showFavorites=async(req,res)=>{
+exports.showFavoriteJobs=async(req,res)=>{
+  const userData = await User.findOne({email:req.params.id});
+  const jobs=await Jobs.find({
+    _id:{$in: userData.favoriteJobs}
+  });
+  res.json({jobs});
+}
+
+exports.showFavoriteCourses=async(req,res)=>{
   const userData = await User.findOne({email:req.params.id});
   const courses=await Course.find({
     _id:{$in: userData.favoriteCourses}
   });
-  const jobs=await Jobs.find({
-    _id:{$in: userData.favoriteJobs}
-  });
-  res.json({courses:courses,jobs:jobs});
+  res.json({courses});
+}
+
+exports.feedback = async (req,res) => {
+  await mailer.send({email:'inovicsapp@gmail.com',subject:'Feedback',text:'Feedback Received',html:`<h4>${req.body.feedback}</h4>`},res);
+  res.json({error:false,message:'Feedback has been sent to developers'});
 }
