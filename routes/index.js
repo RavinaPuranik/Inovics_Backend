@@ -12,11 +12,13 @@ router.get('/',(req,res) => {
 
 router.get('/courses/:name', controller.getCourses);
 router.post('/create/courses',controller.createCourse);
+router.post('/delete/courses',controller.deleteCourse);
 
 // Jobs Routes and Controllers handling
 
 router.get('/jobs/:name', controller.getJobs);
 router.post('/create/jobs', controller.createJob);
+router.post('/delete/jobs',controller.deleteJob);
 
 // User Register and Login handling
 
@@ -38,7 +40,14 @@ router.get('/failurejson', function(req, res) {
 
 router.post('/otp/verify/:user', userController.otpVerify);
 
-// Feedback
+// Favorites
+
+router.post('/courses/:name/:id',userController.saveFavoriteCourses);
+router.post('/jobs/:name/:id',userController.saveFavoriteJobs);
+router.get('/courseFavorites/:id',userController.showFavoriteCourses);
+router.get('/jobFavorites/:id',userController.showFavoriteJobs);
+
+// feedback
 
 router.post('/feedback', userController.feedback);
 

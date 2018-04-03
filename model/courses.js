@@ -31,6 +31,9 @@ const courseSchema = new mongoose.Schema({
   created:{
     type: Date,
     default: Date.now
+  },
+  user:{
+    type:String
   }
 });
 

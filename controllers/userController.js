@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = mongoose.model("User");
+const Course = mongoose.model('Course');
+const Jobs = mongoose.model('Jobs');
 const passport = require("passport");
 
 const mailer = require('../handlers/mail');
@@ -63,7 +65,7 @@ exports.logout = (req, res) => {
 exports.isLoggedIn = async (req, res) => {
   const userData = await User.findOne({email:req.body.email});
   if(userData){
-    res.json({ isLogin: true, email: userData.email, name:userData.name, id: userData._id, interest: userData.interest, isVerified: userData.isVerified, image: userData.image });
+    res.json({ isLogin: true, email: userData.email, name:userData.name, id: userData._id,isVerified: userData.isVerified, image: userData.image });
   }
   else {
     res.json({ isLogin: false });
@@ -91,6 +93,49 @@ exports.otpVerify = async (req, res) => {
     await user.save();
     res.json({ error: true, message: ['OTP Expired.Please check your mail for new OTP.'] });
   }
+}
+
+
+exports.saveFavoriteCourses=async(req,res)=>{
+  const userData = await User.findOne({email:req.body.email});
+  const favorites=userData.favoriteCourses.map(obj=>obj.toString());
+  const course=await Course.findOne({_id:req.params.id});
+  const operator=favorites.includes(course.id)?'$pull':'$addToSet';
+  const user=await User.findByIdAndUpdate(req.body.user_id,{
+  [operator]:   { favoriteCourses:course.id
+  }} ,
+{new:true});
+const isFavorite=favorites.includes(course.id)?'Removed from Favorites':'Marked as Favorites';
+res.json({error:false,message:isFavorite});
+}
+
+exports.saveFavoriteJobs=async(req,res)=>{
+  const userData = await User.findOne({email:req.body.email});
+  const favorites=userData.favoriteJobs.map(obj=>obj.toString());
+  const job=await Jobs.findOne({_id:req.params.id});
+  const operator=favorites.includes(job.id)?'$pull':'$addToSet';
+  const user=await User.findByIdAndUpdate(req.body.user_id,{
+  [operator]:   { favoriteJobs:job.id
+  }} ,
+{new:true});
+const isFavorite=favorites.includes(job.id)?'Removed from Favorites':'Marked as Favorites';
+res.json({error:false,message:isFavorite});
+}
+
+exports.showFavoriteJobs=async(req,res)=>{
+  const userData = await User.findOne({email:req.params.id});
+  const jobs=await Jobs.find({
+    _id:{$in: userData.favoriteJobs}
+  });
+  res.json({jobs});
+}
+
+exports.showFavoriteCourses=async(req,res)=>{
+  const userData = await User.findOne({email:req.params.id});
+  const courses=await Course.find({
+    _id:{$in: userData.favoriteCourses}
+  });
+  res.json({courses});
 }
 
 exports.feedback = async (req,res) => {

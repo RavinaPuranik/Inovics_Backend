@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  favoriteCourses:[
+    {type:mongoose.Schema.ObjectId,ref:'Course'}
+  ],
+  favoriteJobs:[
+    {type:mongoose.Schema.ObjectId,ref:'Jobs'}
+  ],
   image:String,
   otpExpiry: Date,
   isVerified: Boolean
