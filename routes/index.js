@@ -40,6 +40,10 @@ router.get('/failurejson', function(req, res) {
 
 router.post('/otp/verify/:user', userController.otpVerify);
 
+//reset password
+router.post('/reset', userController.resetPasswordLink);
+router.get('/reset/:id', userController.renderResetPassword);
+router.post('/reset/:id',userController.updateResetPassword);
 // Favorites
 
 router.post('/courses/:name/:id',userController.saveFavoriteCourses);
