@@ -47,8 +47,12 @@ router.post('/jobs/:name/:id',userController.saveFavoriteJobs);
 router.get('/courseFavorites/:id',userController.showFavoriteCourses);
 router.get('/jobFavorites/:id',userController.showFavoriteJobs);
 
-// feedback
+// Feedback
 
 router.post('/feedback', userController.feedback);
+
+// Profile Updated
+
+router.post('/update', userController.updateProfile);
 
 module.exports = router;

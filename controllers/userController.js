@@ -75,8 +75,6 @@ exports.isLoggedIn = async (req, res) => {
 exports.otpVerify = async (req, res) => {
   const user = await User.findOne({ email: req.params.user });
   if(user.otpExpiry.getTime() >= Date.now()){
-    console.log(user.otp);
-    console.log(req.body.otp);
     if(user.otp === req.body.otp){
       user.isVerified = true;
       await user.save();
@@ -124,21 +122,43 @@ res.json({error:false,message:isFavorite});
 
 exports.showFavoriteJobs=async(req,res)=>{
   const userData = await User.findOne({email:req.params.id});
-  const jobs=await Jobs.find({
-    _id:{$in: userData.favoriteJobs}
-  });
-  res.json({jobs});
+  if(userData){
+    const jobs=await Jobs.find({
+      _id:{$in: userData.favoriteJobs}
+    });
+    res.json({jobs});
+  }else{
+    res.json({error:true,message:['Sorry! Failed to fetch your Favorite Courses.']})
+  }
 }
 
 exports.showFavoriteCourses=async(req,res)=>{
   const userData = await User.findOne({email:req.params.id});
-  const courses=await Course.find({
-    _id:{$in: userData.favoriteCourses}
-  });
-  res.json({courses});
+  if(userData){
+    const courses=await Course.find({
+      _id:{$in: userData.favoriteCourses}
+    });
+    res.json({courses});
+  }else{
+    res.json({error:true,message:['Sorry! Failed to fetch your Favorite Courses']})
+  }
 }
 
 exports.feedback = async (req,res) => {
   await mailer.send({email:'inovicsapp@gmail.com',subject:'Feedback',text:'Feedback Received',html:`<h4>${req.body.feedback}</h4>`},res);
   res.json({error:false,message:'Feedback has been sent to developers'});
+}
+
+exports.updateProfile = async (req,res) => {
+  const userData = await User.findOne({ email: req.body.email });
+
+  if(userData){
+    userData.name = req.body.name;
+    userData.image = req.body.image;
+    await userData.save();
+    res.json({error:false,message:['Profile Updated Successfully']});
+  }else{
+    res.json({error:true,message:['You are not authenticated']});
+  }
+
 }
