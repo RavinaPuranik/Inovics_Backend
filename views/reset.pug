@@ -1,0 +1,25 @@
+doctype html
+html
+head
+  title='Inovics | Reset Password'
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css')
+  meta(name="viewport" content="width=device-width, initial-scale=1")
+  body
+      block content         
+  form(method="POST")
+    .container
+     .row.ml-5.pl-5
+      .col-md-10
+        .h2.my-5.text-center Reset Password
+        if(message)
+          .alert.alert-danger.d-block.ml-5.text-center(style="width:800px")=message
+        form(method='POST' action='/register')
+          .form-group.ml-5.pl-5
+            label(for='password') Password
+            input.form-control(type='password', placeholder='Password' name='password' required)
+          .form-group.ml-5.pl-5
+            label(for='confirm-password') Confirm Password
+            input.form-control(type='password', placeholder='Confirm Password' name='confirm-password' required)
+          .ml-5.pl-5
+            button.btn.btn-primary.btn-block(type='submit') Reset
+      

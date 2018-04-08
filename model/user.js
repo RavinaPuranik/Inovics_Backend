@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
   favoriteJobs:[
     {type:mongoose.Schema.ObjectId,ref:'Jobs'}
   ],
+  resetPasswordExpires:Date,
   image:String,
   otpExpiry: Date,
   isVerified: Boolean
