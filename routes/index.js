@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 const router = express.Router();
 
 router.get('/',(req,res) => {
-  res.send('Server is Up and Running');
+  res.json('Server is Up and Running');
 });
 
 // Courses Routes and Controllers handling
