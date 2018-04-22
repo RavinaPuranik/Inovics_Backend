@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 
+variables.env
+
 # misc
 .DS_Store
 .env.local
@@ -15,4 +17,3 @@ yarn-debug.log*
 yarn-error.log*
 yarn.lock
 package-lock.json
-variables.env
